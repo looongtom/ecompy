@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Book List</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+        }
+/* 
+        h1 {
+            text-align: center;
+        }
+
+        form {
+            text-align: center;
+        } */
+
+        input[type="text"],
+        input[type="file"],
+        input[type="submit"],
+        button {
+            margin-top: 10px;
+        }
+
+        input[type="text"],
+        input[type="file"],
+        input[type="submit"],
+        button {
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input[type="submit"],
+        button {
+            cursor: pointer;
+        }
+
+        input[type="text"] {
+            width: 300px;
+        }
+
+    
+
+        #preview {
+            display: none;
+            width: 250px;
+            height: 350px;
+            margin-top: 10px;
+        }
+
+        table {
+            margin: 30px auto;
+            border-collapse: collapse;
+            width: 80%;
+        }
+
+        th,
+        td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+
+        a.button {
+            display: inline-block;
+            padding: 10px 20px;
+            background-color: orangered;
+            color: white;
+            text-decoration: none;
+            margin-bottom: 20px;
+            border-radius: 5px;
+        }
+
+        a.button:hover {
+            background-color: #ff6b6b;
+        }
+
+        #output {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        #startButton {
+            padding: 10px 20px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        #startButton:hover {
+            background-color: #45a049;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display: flex; justify-content: space-between;">
+        <div style="flex-basis: 48%;">
+            <p>Search by key words</p>
+            <form method="GET" action="{% url 'search' %}">
+                <input type="text" name="keyword" placeholder="Insert words to search..." value="{{query}}">
+                <input type="submit" value="Search by word">
+            </form>
+            <br>
+            <p>Search by voice</p>
+            <div class="container">
+                <button id="startButton">Start Recording</button>
+                <div id="output"></div>
+            </div>
+        </div>
+    
+        <div style="flex-basis: 48%;">
+            <p>Search by images</p>
+            <form method="POST" action="http://127.0.0.1:8001/deep_image_search/search_images/" enctype="multipart/form-data">
+                {% csrf_token %}
+                <input type="file" id="img" name="image_path" accept="image/*" onchange="previewImage(event)">
+                <img id="preview" src="#" alt="Image Preview" style="display: none; width: 250px; height: 350px;">
+                <input type="submit" value="Search by image">
+            </form>
+            <br>
+        </div>
+    </div>
+
+    <div style="display: flex; justify-content: space-between; margin-top: 20px;">
+        <div style="flex-basis: 48%;"></div>
+    
+        <div style="flex-basis: 48%; text-align: right;">
+            <button style="padding: 0; border: none; background: none;">
+                <a href="http://127.0.0.1:8000/cart/">
+                    {% load static %}
+                    <img src="{% static 'images/view_cart.jpg' %}" alt="View Cart" style="width: 200px; height: 100px;">
+                </a>
+            </button>
+            
+        </div>
+    </div>
+    
+
+    <table border="1">
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Image</th>
+                <th>Price</th>
+                <th style="border-color: transparent;"></th>
+
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.name }}</td>
+                <td>{{ book.author }}</td>
+                <td><img src="{{ book.image.url }}" alt="{{ book.name }}" width="150" height="200"></td>
+                <td>$ {{ book.price|floatformat:2 }}
+                    <button style="padding: 0; border: none; background: none;">
+                        <a href="{% url 'add_to_cart' book.id %}">
+                            {% load static %}
+                        </a>
+                    </button>
+                </td>
+                <td style="border-color: transparent;">
+                    <button style="padding: 0; border: none; background: none;">
+                        <a href="{% url 'add_to_cart' book.id %}">
+                            {% load static %}
+                            <img src="{% static 'images/add_to_cart.png' %}" alt="Add to Cart" style="width: 50px; height: 50px;">
+                        </a>
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <script>
+        function previewImage(event) {
+            var reader = new FileReader();
+            reader.onload = function () {
+                var output = document.getElementById('preview');
+                output.src = reader.result;
+                output.style.display = 'block';
+            };
+            reader.readAsDataURL(event.target.files[0]);
+        }
+    </script>
+    <script>
+        const startButton = document.getElementById('startButton');
+        const outputDiv = document.getElementById('output');
+        const recognition = new (window.SpeechRecognition || window.webkitSpeechRecognition || window.mozSpeechRecognition || window.msSpeechRecognition)();
+
+        recognition.lang = 'vi-VN';
+        recognition.interimResults = false;
+        recognition.maxAlternatives = 1;
+
+        function redirectToSearch(keyword) {
+            const url = `http://127.0.0.1:8000/catalog/search_by_voice/?keyword=${keyword}`;
+            window.location.href = url;
+        }
+
+        recognition.onresult = function (event) {
+            const transcript = event.results[0][0].transcript;
+            outputDiv.textContent = "You said: " + transcript;
+            redirectToSearch(transcript);
+        }
+
+        recognition.onend = function () {
+            startButton.textContent = "Start Recording";
+        }
+
+        startButton.addEventListener('click', function () {
+            if (recognition.recording) {
+                recognition.stop();
+                startButton.textContent = "Start Recording";
+            } else {
+                recognition.start();
+                startButton.textContent = "Stop Recording";
+                outputDiv.textContent = "Listening...";
+            }
+        });
+    </script>
+</body>
+
+</html>

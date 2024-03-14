@@ -1,0 +1,23 @@
+<!-- yourapp/templates/add_book.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Book</title>
+</head>
+<body>
+
+<h1>Add Book</h1>
+<button>
+<a href="http://127.0.0.1:8000/book/book-list/">Back</a>
+
+</button>
+<form method="post"  enctype="multipart/form-data" action="{% url 'add-book' %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Add Book</button>
+</form>
+
+</body>
+</html>

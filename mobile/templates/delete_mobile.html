@@ -1,0 +1,25 @@
+<!-- yourapp/templates/delete_book.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Delete Book</title>
+</head>
+<body>
+
+<h1>Delete Mobile</h1>
+
+<p>Are you sure you want to delete the mobile name "{{ object.name }}"" ?</p>
+<div style="display: flex; ">
+    <button>
+        <a href="http://127.0.0.1:8000/mobile/bomobileok-list/">Back</a>
+    </button>
+    
+    <form method="post" action="{% url 'delete-mobile' pk=object.pk %}">
+        {% csrf_token %}
+        <button type="submit">Delete</button>
+    </form>
+</div>
+</body>
+</html>

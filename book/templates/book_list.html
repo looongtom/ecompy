@@ -1,0 +1,169 @@
+<!-- yourapp/templates/book_list.html -->
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Book List</title>
+    <style>
+        /* Add your CSS styles here */
+        .dashboard {
+            display: flex;
+            justify-content: space-around;
+            background-color: #4CAF50;
+            border-radius: 5px;
+        }
+
+        .dashboard a {
+            color: white;
+            text-decoration: none;
+            font-size: 18px;
+            transition: background-color 0.3s ease;
+        }
+
+        .dashboard a:hover {
+            background-color: #45a049;
+        }
+
+        button {
+            background-color: #008CBA; /* Blue background color */
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button {
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #005f7f; /* Darker blue on hover */
+        }
+
+        /* Style for button links */
+        button a {
+            color: white;
+            text-decoration: none;
+        }
+
+        /* Style for Delete button */
+        .delete-button {
+            background-color: #ff0000; /* Red background color */
+        }
+
+        /* Style for Update button */
+        .update-button {
+            background-color: #ffb066; /* Yellow background color */
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 8px;
+            text-align: left;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+
+        tr:nth-child(even) {
+            background-color: #f2f2f2;
+        }
+
+        tr:hover {
+            background-color: #ddd;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="dashboard">
+        <a href="http://127.0.0.1:8000/mobile/mobile-list/">
+            <h2>Mobile Management</h2>
+        </a>
+        <a href="http://127.0.0.1:8000/clothe/clothe-list/">
+            <h2>Cloth Management</h2>
+        </a>
+        <a href="http://127.0.0.1:8000/book/book-list/">
+            <h2>Book Management</h2>
+        </a>
+    </div>
+
+    <h1>Book List</h1>
+    <button>
+        <a href="http://127.0.0.1:8000/book/add-book/">Add New</a>
+    </button>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Image</th>
+                <th>Name</th>
+                <th>Author</th>
+                <th>Price</th>
+                <th>Description</th>
+                <th>Category</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for book in books %}
+            <tr>
+                <td>{{ book.id }}</td>
+                <td>
+                    <img src="{{book.image.url}}" alt="{{ book.name }}" width="150" height="200">
+                </td>
+                <td>{{ book.name }}</td>
+                <td>{{ book.author }}</td>
+                <td>$ {{ book.price|floatformat:2 }}</td>
+                <td>{{ book.description }}</td>
+                <td>
+                    {% for category in book.categories.all %}
+                    {{ category.name }}
+                    {% if not forloop.last %}, {% endif %}
+                    {% endfor %}
+
+                </td>
+                <td>
+                    <button class="update-button">
+                        <a href="http://127.0.0.1:8000/book/update-book-v2/{{ book.id }}">Update</a>
+                    </button>
+                    <button class="delete-button">
+                        <a href="http://127.0.0.1:8000/book/delete-book/{{ book.id }}">Delete</a>
+                    </button>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+</body>
+
+</html>

@@ -1,0 +1,22 @@
+<!-- yourapp/templates/update_book.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Clothe</title>
+</head>
+<body>
+
+<h1>Update Clothe</h1>
+<button>
+<a href="http://127.0.0.1:8000/clothe/clothe-list/">Back</a>
+</button>
+<form method="post" enctype="multipart/form-data" action="{% url 'update-clothe' pk=object.pk %}">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Update Clothe</button>
+</form>
+
+</body>
+</html>

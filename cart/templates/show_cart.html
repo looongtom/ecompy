@@ -1,0 +1,27 @@
+{% load static %}
+
+<h1>Your Cart</h1>
+<a href="http://127.0.0.1:8000/catalog/home/" style="display: inline-block; padding: 10px 20px; background-color: blue; color: white; text-decoration: none; margin-bottom: 20px;">Back to Catalog</a>
+<p style="font-size: 20px; color: green;">Total Cart Price: $ {{ overall_total|floatformat:2 }}</p>
+<ul>
+    {% for item in cart_items %}
+    <li>
+        <h2>{{ item.name }}</h2>
+        <img src="/media/{{ item.image }}" alt="{{ item.name }}" width="150" height="200">
+        <div style="display: inline;">
+            <form method="post" action="{% url 'update_cart_quantity' item.id %}">
+                {% csrf_token %}
+                <p style="display: inline;" >Quantity:</p>
+                <input type="number" name="new_quantity" value="{{ item.quantity }}" min="0" style="display: inline;" />
+                <button type="submit">Update</button>
+            </form>
+        </div>
+
+        <p>Price:  $ {{ item.price|floatformat:2 }}</p>
+        <p>Total: $ {{ item.total|floatformat:2 }}</p>
+        <button style="background-color: red; color: white;">
+            <a href="{% url 'delete-cart' item.id %}" style="color: white;">Delete</a>
+        </button>
+    </li>
+    {% endfor %}
+</ul>
