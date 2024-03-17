@@ -28,5 +28,6 @@ urlpatterns = [
     path('clothe/', include('clothe.urls')),
 
     path('catalog/', include('catalog.urls')),
+    path('local_user/', include('local_user.urls')),
 
 ]+ static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

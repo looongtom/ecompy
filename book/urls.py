@@ -16,6 +16,5 @@ urlpatterns = [
     path('delete-book/<int:pk>/', DeleteBookView.as_view(), name='delete-book'),
 
     path('<int:id>', views.UpdateBookView.as_view(), name='API to update book'),
- 
 
 ]

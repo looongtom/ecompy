@@ -14,9 +14,15 @@ from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import DeleteView
 from .serializers import MobileSerializer
-
+from person_project.decorator import(
+    is_authenticated,
+    is_admin
+) 
+from django.utils.decorators import method_decorator
 
 class ListMobileView(APIView):
+    @method_decorator(is_authenticated)
+    @method_decorator(is_admin)
     def get(self, request, format=None):
         mobile = Mobile.objects.all()
     

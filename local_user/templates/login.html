@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+</head>
+<body>
+
+    <h3>Login</h3>
+    <p>User name</p>
+    <input id="username" type="text" > <br>
+
+    <p>Password</p>
+    <input id="password" type="password"> <br>
+    <button onclick="signIn()">Sign in</button>
+
+    <div>
+        Don't have an account?
+        <a href="{% url 'show_register_page' %}">Sign up</a>
+    </div>
+
+    <script>
+        async function signIn(){
+            const user = {
+                'email': document.getElementById('username').value,
+                'password': document.getElementById('password').value
+            }
+
+            fetch("login", {
+                method: 'POST',
+                body: JSON.stringify(user),
+                headers: {
+                    'Content-Type': 'application/json'// Đặt định dạng Content-Type là JSON
+                },
+            })
+            .then(response => {
+                if(!response.ok){
+                    return response.json().then(data => {
+                        throw new Error(data.error); // Ném lỗi với nội dung từ thuộc tính 'error'
+                    });
+                }
+                return response
+            })
+            .then(data => {
+                window.location.assign('/')
+            })
+            .catch(error => {
+                // Lấy ngày hiện tại
+                var currentDate = new Date();
+                // Đặt thời gian hết hạn của cookie thành một thời điểm trong quá khứ
+                currentDate.setTime(currentDate.getTime() - 1);
+                // Đặt cookie với tên và giá trị tương ứng
+                document.cookie = "sessionId=; expires=" + currentDate.toGMTString() + "; path=/";
+               alert(error.message)
+            })
+        }
+    </script>   
+</body>
+</html>

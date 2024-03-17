@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Register</title>
+</head>
+<body>
+
+    <h3>Sign up</h3>
+    <p>Email</p>
+    <p id="email-error" style="color: red;"></p>
+    <input id="username" type="text" > <br>
+
+    <p>Full name</p>
+    <p id="fullname-error" style="color: red;"></p>
+    <input id="full_name" type="text" > <br>
+
+    <p>Password</p>
+    <p id="password-error" style="color: red;"></p>
+    <input id="password" type="password"> <br>
+
+    <p>Confirm password</p>
+    <p id="re-password-error" style="color: red;"></p>
+    <input id="re_password" type="password"> <br>
+
+    <p>Phone</p>
+    <p id="phone-error" style="color: red;"></p>
+    <input type="text" id="phone"> <br>
+
+    <p>Address</p>
+    <p id="address-error" style="color: red;"></p>
+    <input type="text" id="address"> <br>
+
+    <button onclick="singUp()">Sign up</button>
+
+    <div>
+        Have an account?
+        <a href="{% url 'show_login_page' %}">Sign in</a>
+    </div>
+
+    <script>
+        let emailP = document.getElementById('email-error')
+        let passwordP = document.getElementById('password-error')
+        let rePasswordP = document.getElementById('re-password-error')
+        let phoneP = document.getElementById('phone-error')
+        let addressP = document.getElementById('address-error')
+        let fullnameP = document.getElementById('fullname-error')
+
+        async function singUp(){
+            let formData = new FormData()
+            formData.append('email', document.getElementById('username').value)
+            formData.append('password', document.getElementById('password').value)
+            formData.append('re_password',document.getElementById('re_password').value)
+            formData.append('phone', document.getElementById('phone').value)
+            formData.append('full_name', document.getElementById('full_name').value)
+            formData.append('address', document.getElementById('address').value)
+            
+           
+
+            fetch("registration", {
+                method: 'POST',
+                body: formData,
+            })
+            .then(response => {
+                if(!response.ok){
+                    return response.json().then(data => {
+                        drawErrors(data)
+                        throw new Error("ok"); // Ném lỗi với nội dung từ thuộc tính 'error'
+                    });
+                }
+                return response
+            })
+            .then(data => {
+                window.location.assign('/')
+            })
+            .catch(error => {
+                // Lấy ngày hiện tại
+                var currentDate = new Date();
+                // Đặt thời gian hết hạn của cookie thành một thời điểm trong quá khứ
+                currentDate.setTime(currentDate.getTime() - 1);
+                // Đặt cookie với tên và giá trị tương ứng
+                document.cookie = "sessionId=; expires=" + currentDate.toGMTString() + "; path=/";
+               console.log("co loi xay ra")
+            })
+        }
+
+        function drawErrors(data){
+            console.log(data)
+            let emailError = data.email
+            if(emailError != null){
+                emailP.innerHTML = emailError                
+            }
+            else{
+                emailP.innerHTML = ''
+            }
+
+
+            let addressError = data.address
+            if(addressError != null){
+                addressP.innerHTML = addressError
+            }
+            else{
+                addressP.innerHTML = ''
+            }
+
+            let phoneError = data.phoneError
+            if(phoneError != null){
+                phoneP.innerHTML = phoneError
+            }
+            else{
+                phoneP.innerHTML = ''
+            }
+
+            let rePasswordError = data.re_password
+            if(rePasswordError != null){
+                rePasswordP.innerHTML = rePasswordError
+            }
+            else{
+                rePasswordP.innerHTML = ''
+            }
+
+            let fullNameError = data.full_name
+            if(fullNameError != null){
+                fullnameP.innerHTML = fullNameError
+            }
+            else{
+                fullnameP.innerHTML = ''
+            }
+        }
+    </script>   
+</body>
+</html>

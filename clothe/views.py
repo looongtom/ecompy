@@ -13,8 +13,15 @@ from django.views.generic.edit import CreateView
 from django.views.generic.edit import UpdateView
 from django.views.generic.edit import DeleteView
 from rest_framework import generics
+from person_project.decorator import(
+    is_authenticated,
+    is_admin
+) 
+from django.utils.decorators import method_decorator
 # Create your views here.
 class ListClotheView(APIView):
+    @method_decorator(is_authenticated)
+    @method_decorator(is_admin)
     def get(self, request, format=None):
         clothe = Clothe.objects.all()
         return render(request, 'clothe_list.html', {'clothes':clothe})

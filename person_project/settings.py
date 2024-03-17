@@ -45,6 +45,7 @@ INSTALLED_APPS = [
     'catalog.apps.CatalogConfig',
     'mobile.apps.MobileConfig',
     'clothe.apps.ClotheConfig',
+    'local_user.apps.LocalUserConfig',
 
 ]
 
@@ -156,6 +157,14 @@ DATABASES = {
         'HOST':'localhost',
         'PORT':'3306',
     },
+    'local_user': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ecomstore',
+        'USER': 'root',
+        'PASSWORD': 'tr1nhtu@n',
+        'HOST':'localhost',
+        'PORT':'3306',
+    },
 }
 
 DATABASE_ROUTERS = [
@@ -166,6 +175,8 @@ DATABASE_ROUTERS = [
     'person_project.database_router.MobileRouter',
     'person_project.database_router.ClotheRouter',
     'person_project.database_router.CategoryRouter',
+    'person_project.database_router.LocalUserRouter',
+
 ]
 
 
