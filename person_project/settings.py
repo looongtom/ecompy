@@ -46,6 +46,9 @@ INSTALLED_APPS = [
     'mobile.apps.MobileConfig',
     'clothe.apps.ClotheConfig',
     'local_user.apps.LocalUserConfig',
+    'order_shopping.apps.OrderShoppingConfig',
+    'payment.apps.PaymentConfig',
+    'shipment.apps.ShipmentConfig',
 
 ]
 
@@ -92,15 +95,6 @@ DATABASES = {
             'host': 'mongodb://tom:123456@172.18.80.121:2717/ecommerce'
         }
     },
-
-# 'default': {
-#         'ENGINE': 'django.db.backends.mysql',
-#         'NAME': 'ecomstore',
-#         'USER': 'root',
-#         'PASSWORD': 'tr1nhtu@n',
-#         'HOST':'localhost',
-#         'PORT':'3306',
-#     }
     'book': {
         'ENGINE': 'djongo',
         'NAME': 'ecommerce',
@@ -165,6 +159,31 @@ DATABASES = {
         'HOST':'localhost',
         'PORT':'3306',
     },
+    'order_shopping': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ecomstore',
+        'USER': 'root',
+        'PASSWORD': 'tr1nhtu@n',
+        'HOST':'localhost',
+        'PORT':'3306',
+    },
+    'payment': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ecomstore',
+        'USER': 'root',
+        'PASSWORD': 'tr1nhtu@n',
+        'HOST':'localhost',
+        'PORT':'3306',
+    },
+    'shipment': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ecomstore',
+        'USER': 'root',
+        'PASSWORD': 'tr1nhtu@n',
+        'HOST':'localhost',
+        'PORT':'3306',
+    },
+        
 }
 
 DATABASE_ROUTERS = [
@@ -176,7 +195,9 @@ DATABASE_ROUTERS = [
     'person_project.database_router.ClotheRouter',
     'person_project.database_router.CategoryRouter',
     'person_project.database_router.LocalUserRouter',
-
+    'person_project.database_router.OrderRouter',
+    'person_project.database_router.PaymentRouter',
+    'person_project.database_router.ShipmentRouter',
 ]
 
 

@@ -1,6 +1,8 @@
 from calendar import c
 from django.shortcuts import render
 from book.models import Book
+from mobile.models import Mobile
+from clothe.models import Clothe
 
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
@@ -8,9 +10,13 @@ from django.views.decorators.http import require_POST
 
 import json
 
+import mobile
+
 def show_books(request):
     books = Book.objects.all()
-    return render(request, 'home.html', {'books': books})
+    mobiles = Mobile.objects.all()
+    clothes = Clothe.objects.all()
+    return render(request, 'home.html', {'books': books, 'mobiles': mobiles, 'clothes': clothes})
 
 def search(request):
     query = request.GET.get('keyword')

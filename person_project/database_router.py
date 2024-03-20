@@ -142,3 +142,57 @@ class LocalUserRouter:
         if app_label == 'local_user':
             return db == 'local_user'
         return None
+
+class OrderRouter:
+    def db_for_read(self, model, **hints):
+        if model._meta.app_label == 'order_shopping':
+            return 'order_shopping'
+        return None
+    def db_for_write(self, model, **hints):
+        if model._meta.app_label == 'order_shopping':
+            return 'order_shopping'
+        return None
+    def allow_relation(self, obj1, obj2, **hints):
+        if obj1._meta.app_label == 'order_shopping' or obj2._meta.app_label == 'order_shopping':
+            return True
+        return None
+    def allow_migrate(self, db, app_label, model_name=None, **hints):
+        if app_label == 'order_shopping':
+            return db == 'order_shopping'
+        return None
+
+class PaymentRouter:
+    def db_for_read(self, model, **hints):
+        if model._meta.app_label == 'payment':
+            return 'payment'
+        return None
+    def db_for_write(self, model, **hints):
+        if model._meta.app_label == 'payment':
+            return 'payment'
+        return None
+    def allow_relation(self, obj1, obj2, **hints):
+        if obj1._meta.app_label == 'payment' or obj2._meta.app_label == 'payment':
+            return True
+        return None
+    def allow_migrate(self, db, app_label, model_name=None, **hints):
+        if app_label == 'payment':
+            return db == 'payment'
+        return None
+
+class ShipmentRouter:
+    def db_for_read(self, model, **hints):
+        if model._meta.app_label == 'shipment':
+            return 'shipment'
+        return None
+    def db_for_write(self, model, **hints):
+        if model._meta.app_label == 'shipment':
+            return 'shipment'
+        return None
+    def allow_relation(self, obj1, obj2, **hints):
+        if obj1._meta.app_label == 'shipment' or obj2._meta.app_label == 'shipment':
+            return True
+        return None
+    def allow_migrate(self, db, app_label, model_name=None, **hints):
+        if app_label == 'shipment':
+            return db == 'shipment'
+        return None

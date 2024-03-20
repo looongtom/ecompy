@@ -1,0 +1,29 @@
+{% load static %}
+
+
+<table border="1">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Price</th>
+            <th>Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for order in list_orders %}
+        <tr>
+            <td>{{ order.id }}</td>
+            <td>$ {{ order.total|floatformat:2 }}</td>
+            <td>{{ order.status }}</td>
+            <td>
+                <button >
+                    <a href="{% url 'show_order_details' order.id %}">Detail</a>
+                </button>
+                <button>
+                    <a href="{% url 'create_shipment' order.id %}">Payment</a>
+                </button>
+            </td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
