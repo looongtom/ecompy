@@ -27,9 +27,12 @@ def update_shipment(request,shipment_id):
     shipment = get_object_or_404(Shipment, id=shipment_id)
     shipment.address= request.POST['address']
     shipment.save()
-    #redirect to shipment detail page
-    return HttpResponseRedirect('/shipment/show_shipments_detail/'+str(shipment_id))
+    order = get_object_or_404(Order, id=shipment.order_id)
+    request.session['amount'] = shipment.ship_fee+order.total
+    #redirect to create_payment with order_id from app payment 
+    return HttpResponseRedirect('/payment_order/create_payment_order/'+str(shipment.order_id))
     
+
 
 def show_shipments_detail(request,shipment_id):
     shipment= get_object_or_404(Shipment, id=shipment_id)

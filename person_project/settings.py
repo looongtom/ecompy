@@ -47,9 +47,9 @@ INSTALLED_APPS = [
     'clothe.apps.ClotheConfig',
     'local_user.apps.LocalUserConfig',
     'order_shopping.apps.OrderShoppingConfig',
-    'payment.apps.PaymentConfig',
     'shipment.apps.ShipmentConfig',
-
+    'payment.apps.PaymentConfig',
+    'payment_order.apps.PaymentOrderConfig',
 ]
 
 MIDDLEWARE = [
@@ -183,6 +183,14 @@ DATABASES = {
         'HOST':'localhost',
         'PORT':'3306',
     },
+    'payment_order': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'ecomstore',
+        'USER': 'root',
+        'PASSWORD': 'tr1nhtu@n',
+        'HOST':'localhost',
+        'PORT':'3306',
+    },
         
 }
 
@@ -198,6 +206,7 @@ DATABASE_ROUTERS = [
     'person_project.database_router.OrderRouter',
     'person_project.database_router.PaymentRouter',
     'person_project.database_router.ShipmentRouter',
+    'person_project.database_router.PaymentOrderRouter',
 ]
 
 

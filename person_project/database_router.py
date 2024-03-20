@@ -179,6 +179,24 @@ class PaymentRouter:
             return db == 'payment'
         return None
 
+class PaymentOrderRouter:
+    def db_for_read(self, model, **hints):
+        if model._meta.app_label == 'payment_order':
+            return 'payment_order'
+        return None
+    def db_for_write(self, model, **hints):
+        if model._meta.app_label == 'payment_order':
+            return 'payment_order'
+        return None
+    def allow_relation(self, obj1, obj2, **hints):
+        if obj1._meta.app_label == 'payment_order' or obj2._meta.app_label == 'payment_order':
+            return True
+        return None
+    def allow_migrate(self, db, app_label, model_name=None, **hints):
+        if app_label == 'payment_order':
+            return db == 'payment_order'
+        return None
+
 class ShipmentRouter:
     def db_for_read(self, model, **hints):
         if model._meta.app_label == 'shipment':

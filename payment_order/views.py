@@ -6,9 +6,9 @@ from rest_framework import generics, status
 from rest_framework.response import Response
 from django.http import HttpResponseRedirect
 from django.utils import timezone
-from payment.models import Payment
+from payment_order.models import Payment_Order
 
-def create_payment(request,order_id):
+def create_payment_order(request,order_id):
     print("=========================CREATE PAYMENT=======================")
     user_id= request.session['user_id']
     amount= request.session['amount']
@@ -16,7 +16,7 @@ def create_payment(request,order_id):
     current_date = timezone.now()
     
     # Create a payment
-    payment = Payment(user_id=user_id, order_id=order_id, amount=amount, method=method, date=current_date)
+    payment = Payment_Order(user_id=user_id, order_id=order_id, amount=amount, method=method, date=current_date)
     payment.save()
     print("==========================PAYMENT=======================")
     if payment.id:
